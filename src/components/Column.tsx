@@ -19,6 +19,7 @@ interface ColumnProps {
     onSetReminder: (lead: Lead) => void;
     onToggleEmergency: (lead: Lead) => void;
     onAssignLead: (leadId: string, userId: string | null) => void;
+    onMarkComplete: (lead: Lead) => void;
 }
 
 function getColumnClass(columnId: string): string {
@@ -43,6 +44,7 @@ export default function Column({
     onSetReminder,
     onToggleEmergency,
     onAssignLead,
+    onMarkComplete,
 }: ColumnProps) {
     const [editingTitle, setEditingTitle] = useState(false);
     const [title, setTitle] = useState(column.title);
@@ -110,6 +112,7 @@ export default function Column({
                             onSetReminder={onSetReminder}
                             onToggleEmergency={onToggleEmergency}
                             onAssign={onAssignLead}
+                            onMarkComplete={onMarkComplete}
                         />
                     ))}
                 </SortableContext>

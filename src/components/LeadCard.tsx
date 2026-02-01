@@ -13,6 +13,7 @@ interface LeadCardProps {
     onSetReminder: (lead: Lead) => void;
     onToggleEmergency: (lead: Lead) => void;
     onAssign: (leadId: string, userId: string | null) => void;
+    onMarkComplete: (lead: Lead) => void;
 }
 
 export default function LeadCard({
@@ -24,6 +25,7 @@ export default function LeadCard({
     onSetReminder,
     onToggleEmergency,
     onAssign,
+    onMarkComplete,
 }: LeadCardProps) {
     const {
         attributes,
@@ -69,7 +71,31 @@ export default function LeadCard({
                 }}
             />
 
-            <div className="lead-title">{lead.title}</div>
+            {/* Complete checkbox */}
+            <label
+                className="complete-checkbox"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                    position: 'absolute',
+                    top: '4px',
+                    left: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    fontSize: '10px',
+                    color: '#6b7280',
+                    cursor: 'pointer',
+                }}
+            >
+                <input
+                    type="checkbox"
+                    checked={false}
+                    onChange={() => onMarkComplete(lead)}
+                    style={{ width: '12px', height: '12px', cursor: 'pointer' }}
+                />
+            </label>
+
+            <div className="lead-title" style={{ marginLeft: '20px' }}>{lead.title}</div>
             <div className="lead-meta">{lead.details}</div>
 
             {lead.note && (

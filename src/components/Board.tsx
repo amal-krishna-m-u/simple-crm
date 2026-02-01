@@ -17,6 +17,7 @@ import Header from './Header';
 import CustomerModal from './modals/CustomerModal';
 import ReminderModal from './modals/ReminderModal';
 import CustomersListModal from './modals/CustomersListModal';
+import HistoryModal from './modals/HistoryModal';
 import type { Column as ColumnType, Lead, Customer, User } from '@/lib/types';
 import * as db from '@/lib/database';
 
@@ -490,6 +491,30 @@ export default function Board() {
         handleOpenCustomerProfile(selectedSearchCustomer);
     }
 
+    // Soft delete - mark lead as completed
+    async function handleMarkComplete(lead: Lead) {
+        try {
+            await db.updateLead(lead.$id, { is_completed: true });
+            setLeads(prev =>
+                prev.map(l => (l.$id === lead.$id ? { ...l, is_completed: true } : l))
+            );
+        } catch (error) {
+            console.error('Error marking lead as complete:', error);
+        }
+    }
+
+    // Restore a completed lead back to the board
+    async function handleRestoreLead(lead: Lead) {
+        try {
+            await db.updateLead(lead.$id, { is_completed: false });
+            setLeads(prev =>
+                prev.map(l => (l.$id === lead.$id ? { ...l, is_completed: false } : l))
+            );
+        } catch (error) {
+            console.error('Error restoring lead:', error);
+        }
+    }
+
     if (loading) {
         return (
             <div className="loading-container">
@@ -502,6 +527,7 @@ export default function Board() {
         <>
             <Header
                 onOpenReminders={() => setRemindersOpen(true)}
+                onOpenHistory={() => setHistoryOpen(true)}
                 onOpenCustomers={() => setCustomersListOpen(true)}
             />
 
@@ -614,6 +640,7 @@ export default function Board() {
                                     onSetReminder={handleSetReminder}
                                     onToggleEmergency={handleToggleEmergency}
                                     onAssignLead={handleAssignLead}
+                                    onMarkComplete={handleMarkComplete}
                                 />
                             ))}
                         </div>
@@ -644,6 +671,15 @@ export default function Board() {
                 }}
                 customer={selectedCustomer}
                 onSave={handleSaveCustomer}
+            />
+
+            <HistoryModal
+                isOpen={historyOpen}
+                onClose={() => setHistoryOpen(false)}
+                completedLeads={getCompletedLeads()}
+                columns={columns}
+                onRestore={handleRestoreLead}
+                onPermanentDelete={handleDeleteLead}
             />
         </>
     );

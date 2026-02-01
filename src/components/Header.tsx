@@ -6,9 +6,10 @@ import { useAuth } from '@/contexts/AuthContext';
 interface HeaderProps {
     onOpenReminders: () => void;
     onOpenCustomers: () => void;
+    onOpenHistory: () => void;
 }
 
-export default function Header({ onOpenReminders, onOpenCustomers }: HeaderProps) {
+export default function Header({ onOpenReminders, onOpenCustomers, onOpenHistory }: HeaderProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const { user, logout } = useAuth();
@@ -62,6 +63,9 @@ export default function Header({ onOpenReminders, onOpenCustomers }: HeaderProps
                         <div className="menu-panel">
                             <button className="menu-item" onClick={() => { onOpenReminders(); setMenuOpen(false); }}>
                                 Reminders
+                            </button>
+                            <button className="menu-item" onClick={() => { onOpenHistory(); setMenuOpen(false); }}>
+                                Completed (History)
                             </button>
                             <button className="menu-item" onClick={() => { onOpenCustomers(); setMenuOpen(false); }}>
                                 Customers List
