@@ -1,4 +1,4 @@
-import { Client, Account, Databases, Teams } from 'appwrite';
+import { Client, Account, Databases, Teams, Storage, ID } from 'appwrite';
 
 // ============ CLIENT-SIDE APPWRITE (Browser) ============
 export const client = new Client();
@@ -11,6 +11,10 @@ client
 export const account = new Account(client);
 export const databases = new Databases(client);
 export const teams = new Teams(client);
+export const storage = new Storage(client);
+
+// Re-export ID for convenience
+export { ID };
 
 // Database and collection IDs
 export const DATABASE_ID = process.env.NEXT_PUBLIC_DATABASE_ID || 'crm_db';

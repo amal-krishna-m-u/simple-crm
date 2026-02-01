@@ -670,6 +670,7 @@ export default function Board() {
                     setSelectedCustomer(null);
                 }}
                 customer={selectedCustomer}
+                users={users}
                 onSave={handleSaveCustomer}
             />
 

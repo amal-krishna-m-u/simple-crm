@@ -26,11 +26,17 @@ export interface Customer extends Models.Document {
     phone: string;
     email: string;
     details: string;
-    attachments: string[];
-    members: CustomerMember[];
+    // Document file IDs (stored in Appwrite Storage)
+    passport_file_id: string | null;
+    aadhaar_file_id: string | null;
+    pan_file_id: string | null;
+    // Assigned users (JSON string of user IDs)
+    assigned_users: string | null;
 }
 
-export interface CustomerMember {
+// Parsed assigned users
+export interface AssignedUser {
+    id: string;
     name: string;
 }
 
@@ -65,8 +71,10 @@ export interface CreateCustomerData {
     phone?: string;
     email?: string;
     details?: string;
-    attachments?: string[];
-    members?: CustomerMember[];
+    passport_file_id?: string | null;
+    aadhaar_file_id?: string | null;
+    pan_file_id?: string | null;
+    assigned_users?: string | null;
 }
 
 export interface UpdateLeadData extends Partial<CreateLeadData> { }
